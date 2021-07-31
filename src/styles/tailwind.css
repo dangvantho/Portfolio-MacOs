@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.list-arrow{
+    list-style: "⇀";
+}
+.emoji-list{
+    padding-left: 16px;
+}
+.emoji-list li{
+    padding-left: 8px;
+}
+.inner-window{
+    height: calc(100% - 1.5rem);
+}
+.skill-item svg{
+    opacity: 0.8;
+    width: 18px;
+    height: 18px;
+}
+.window-app{
+    width: 150%;
+    height: 150%;
+}
+.switch-input{
+    border: transparent;
+}
