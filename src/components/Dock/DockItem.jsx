@@ -4,14 +4,18 @@ import PropTypes from "prop-types";
 DockItem.propTypes = {};
 
 function DockItem(props) {
-  const { name, img, link, appId, openApp, show } = props;
+  const { name, img, link, appId, openApp, show, onResetMaximum } = props;
   const [hover, setHover] = useState(false);
+  function handleMinimum(){
+    onResetMaximum(appId)
+    openApp(appId)
+  }
   return (
     <li
       className="w-10 md:w-12 relative cursor-pointer"
       onMouseOver={() => setHover(true)}
       onMouseOut={() => setHover(false)}
-      onClick={()=>openApp(appId)}
+      onClick={handleMinimum}
     >
       {hover && (
         <p className="absolute -top-full left-1/2 transform -translate-x-1/2 p-2 rounded-md bg-gray-300 bg-opacity-80 text-sm font-semibold">

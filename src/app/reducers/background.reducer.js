@@ -5,11 +5,12 @@ const backgroundSlice = createSlice({
   initialState: {
     bgColor: "dark",
     bgImg: "dark",
-    brightness: 90,
+    brightness: 100,
     wifi: true,
     shutdown: false,
-    login: false,
-    desktop: true,
+    login: true,
+    desktop: false,
+    restart: false,
     lound: 80,
     playMusic: false
   },
@@ -49,6 +50,9 @@ const backgroundSlice = createSlice({
       state.desktop = false;
       state.shutdown = false;
     },
+    toggleRestart(state){
+      state.restart= !state.restart
+    },
     togglePlayMusic(state){
         state.playMusic= !state.playMusic
     }
@@ -62,6 +66,7 @@ export const {
   toggleBoot,
   toggleLogin,
   toggleShutdown,
-  togglePlayMusic
+  togglePlayMusic,
+  toggleRestart,
 } = backgroundSlice.actions;
 export default backgroundSlice.reducer;

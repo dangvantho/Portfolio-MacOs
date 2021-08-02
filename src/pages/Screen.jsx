@@ -15,32 +15,84 @@ function Screen(props) {
   const dispatch = useDispatch();
   const audio = useRef();
   function createApp(id) {
-    let dup = appWindows.find((item) => item.id === id);
-    if (dup) return;
     let app = apps.find((x) => x.id === id);
-    console.log(appWindows);
-    if (!["launchpad", "email", "github"].includes(app.id)) {
-      console.log(app);
-      dispatch(openApp(id));
-      app = {
-        ...app,
-        zIndex: appWindows.length + 10,
-        minimum: false,
-        maximum: false,
-      };
-      const newAppWindows = [...appWindows, app];
-      setAppWindows(newAppWindows);
+    if (["launchpad", "email", "github"].includes(app.id)) {
+      return;
     }
+    dispatch(openApp(id));
+
+    let dup = appWindows.find((item) => item.id === id);
+    if (dup) {
+      return;
+    }
+    app = {
+      ...app,
+      zIndex: appWindows.length + 10,
+      minimum: false,
+      maximum: false,
+      show: true,
+      maxZIndex: appWindows[0] ? appWindows[0].maxZIndex + 1 : 11,
+    };
+    const newAppWindows = [...appWindows, app];
+    for(let app of newAppWindows){
+      if(app.maximum){
+        app.maximum= false
+      }
+    }
+    setAppWindows(newAppWindows);
   }
   function handleCloseApp(id) {
     let app = appWindows.filter((x) => x.id !== id);
-    console.log(app);
-    app = app.map((item) => {
-      item = { ...item, zIndex: appWindows.length - 1 + 10 };
-      return item;
-    });
-    setAppWindows(app);
+    console.log("app", app);
     dispatch(closeApp(id));
+    setAppWindows(app);
+  }
+  function handleChangeIndex(id) {
+    let newApps = [...appWindows];
+    for (let item of newApps) {
+      if (item.id !== id) {
+        ++item.maxZIndex;
+      } else {
+        ++item.maxZIndex;
+        item.zIndex = item.maxZIndex;
+      }
+    }
+    console.log("newApps", newApps);
+    setAppWindows(newApps);
+  }
+  function handleMinimum(id) {
+    const apps= [...appWindows]
+    for(let app of apps){
+      if(app.id===id){
+        app.minimum= !app.minimum
+        app.maximum= false
+      }
+    }
+    console.log('minimum', apps)
+    setAppWindows(apps)
+  }
+  function handleMaximum(id) {
+    const apps= [...appWindows]
+    for(let app of apps){
+      if(app.id===id){
+        app.minimum= false
+        app.maximum= true
+      }
+    }
+    console.log('minimum', apps)
+    setAppWindows(apps)
+  }
+  function handleResetMaximum(id){
+    const newApps= [...appWindows]
+    for(let app of newApps){
+      if(app.maximum){
+        app.maximum= false
+      }
+      if(app.id===id){
+        app.minimum= false
+      }
+    }
+    handleChangeIndex(id)
   }
   useEffect(() => {
     if (audio.current) {
@@ -59,16 +111,19 @@ function Screen(props) {
       audio.current.pause();
     }
   }, [bg.playMusic, bg.lound]);
+  useEffect(() => {
+    console.log(apps, appWindows);
+  }, [apps]);
   return (
     <div
       style={{
         background:
           bg.bgImg === "dark"
-            ? `url(${bgDark}) center`
-            : `url(${bgLight}) center`,
+            ? `url(${bgDark}) center /cover no-repeat`
+            : `url(${bgLight}) center /cover no-repeat`,
         filter: `brightness(${bg.brightness}%)`,
       }}
-      className="fixed bottom-0 left-0 right-0 top-0"
+      className="fixed bottom-0 left-0 right-0 top-0 screen"
     >
       <Header />
       <div className="window-app overflow-auto ">
@@ -81,10 +136,14 @@ function Screen(props) {
             appId={app.id}
             minimum={app.minimum}
             maximum={app.maximum}
+            changeZIndex={handleChangeIndex}
+            zIndex={app.zIndex}
+            onMinimum={handleMinimum}
+            onMaximum= {handleMaximum}
           />
         ))}
       </div>
-      <Dock openApp={createApp} />
+      <Dock openApp={createApp} onResetMaximum={handleResetMaximum} onChangeIndex={handleChangeIndex}/>
       <audio className="fixed top-0 left-0" ref={audio}></audio>
     </div>
   );

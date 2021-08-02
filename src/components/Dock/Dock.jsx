@@ -6,7 +6,7 @@ import DockItem from "./DockItem";
 Dock.propTypes = {};
 
 function Dock(props) {
-  const { apps, openApp } = props;
+  const { apps, openApp, onResetMaximum } = props;
   useEffect(()=>{}, [apps])
   return (
     <div className="fixed w-full bottom-0 left-0 flex justify-center z-20">
@@ -23,6 +23,7 @@ function Dock(props) {
             appId={app.id}
             openApp={openApp}
             show= {app.show}
+            onResetMaximum={onResetMaximum}
           />
         ))}
       </ul>

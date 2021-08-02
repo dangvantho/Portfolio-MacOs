@@ -1,10 +1,10 @@
 import React from 'react';
-import Screen from './pages/Screen';
+import Route from './routes/Route';
 
 function App() {
   return (
     <div className="App">
-      <Screen/>
+      <Route/>
     </div>
   );
 }

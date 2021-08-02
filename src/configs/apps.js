@@ -23,7 +23,7 @@ const apps = [
       width: 860,
       height: 500,
       img: bear,
-      content: <Bear />
+      content: (props)=> <Bear {...props} />
     },
     {
       id: "safari",
@@ -34,7 +34,7 @@ const apps = [
       minWidth: 375,
       minHeight: 200,
       img: safari,
-      content: <Safari />
+      content: (props)=> <Safari {...props} />
     },
     {
       id: "vscode",
@@ -42,7 +42,7 @@ const apps = [
       desktop: true,
       show: false,
       img: vscode,
-      content: <VSCode />
+      content: (props)=> <VSCode {...props} />
     },
     {
       id: "facetime",

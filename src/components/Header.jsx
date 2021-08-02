@@ -8,8 +8,8 @@ import { IoIosSwitch } from "react-icons/io";
 import { FiWifi } from "react-icons/fi";
 import { WiDaySunny } from "react-icons/wi";
 import { GiNightSleep } from "react-icons/gi";
-import { BsFullscreen, BsFillPlayFill, BsFillPauseFill } from 'react-icons/bs'
-import { AiFillSound } from 'react-icons/ai'
+import { BsFullscreen, BsFillPlayFill, BsFillPauseFill } from "react-icons/bs";
+import { AiFillSound } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import {
   slideBrightness,
@@ -17,10 +17,18 @@ import {
   toggleWifi,
   slideSound,
   togglePlayMusic,
+  toggleBoot,
+  toggleRestart,
+  toggleShutdown,
 } from "../app/reducers/background.reducer";
 
 Header.propTypes = {};
 function System() {
+  const dispatch = useDispatch();
+  function handleRestart() {
+    dispatch(toggleRestart());
+    dispatch(toggleShutdown());
+  }
   return (
     <ul className="list-none absolute top-full left-0 w-56 bg-gray-200 bg-opacity-80 blur rounded-b-md control-shadow">
       <li className="border-b-2 px-4 mt-1 hover:bg-blue-500 hover:text-gray-200 leading-6 text-base text-gray-900 border-gray-600 ">
@@ -44,11 +52,22 @@ function System() {
       </li>
       <li className="border-b-2 py-1 leading-6 text-base text-gray-900 border-gray-600 ">
         <ul>
-          <li className="hover:bg-blue-500 hover:text-gray-200 px-4">Sleep</li>
-          <li className="hover:bg-blue-500 hover:text-gray-200 px-4">
+          <li
+            onClick={() => dispatch(toggleBoot())}
+            className="hover:bg-blue-500 hover:text-gray-200 px-4"
+          >
+            Sleep
+          </li>
+          <li
+            onClick={handleRestart}
+            className="hover:bg-blue-500 hover:text-gray-200 px-4"
+          >
             Restart
           </li>
-          <li className="hover:bg-blue-500 hover:text-gray-200 px-4">
+          <li
+            onClick={() => dispatch(toggleShutdown())}
+            className="hover:bg-blue-500 hover:text-gray-200 px-4"
+          >
             Shutdown
           </li>
         </ul>
@@ -59,32 +78,38 @@ function System() {
     </ul>
   );
 }
-function Slider(props){
-  const { change, icon, bgColor, min, max, value }= props
-  function handleChange(e){
-    const value= e.target.value - 0
-    if(value > min+ Math.floor(0.1*(max-min))){
-      change(value)
-      return
+function Slider(props) {
+  const { change, icon, bgColor, min, max, value } = props;
+  function handleChange(e) {
+    const value = e.target.value - 0;
+    if (value > min + Math.floor(0.1 * (max - min))) {
+      change(value);
+      return;
     }
   }
   return (
-    <div className="input-slider flex-1"
-    style={{
-      '--height': '22px',
-      '--bg-right': '#adadad',
-      '--color-text': bgColor==='dark' ? '#ccc': '#444',
-      '--bg-left': bgColor==='dark' ? '#374151': '#E5E7EB',
-    }}
+    <div
+      className="input-slider flex-1"
+      style={{
+        "--height": "22px",
+        "--bg-right": "#adadad",
+        "--color-text": bgColor === "dark" ? "#ccc" : "#444",
+        "--bg-left": bgColor === "dark" ? "#374151" : "#E5E7EB",
+      }}
     >
       <input
-      style={{}}
-      className='' type="range" value={value} onChange={handleChange} min={min} max={max} step={1}/>
-      <div className="icon">
-        { icon }
-      </div>
+        style={{}}
+        className=""
+        type="range"
+        value={value}
+        onChange={handleChange}
+        min={min}
+        max={max}
+        step={1}
+      />
+      <div className="icon">{icon}</div>
     </div>
-  )
+  );
 }
 function Wifi(props) {
   const { toggle } = props;
@@ -154,14 +179,14 @@ function SwitchMenu(props) {
     }
     return bluetooth;
   }
-  function handleChangeBright(value){
-    dispatch(slideBrightness(value))
+  function handleChangeBright(value) {
+    dispatch(slideBrightness(value));
   }
-  function handleChangeSound(value){
-    dispatch(slideSound(value))
+  function handleChangeSound(value) {
+    dispatch(slideSound(value));
   }
-  function handlePlayMusic(){
-    dispatch(togglePlayMusic())
+  function handlePlayMusic() {
+    dispatch(togglePlayMusic());
   }
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 bg-transparent">
@@ -172,7 +197,10 @@ function SwitchMenu(props) {
       <div
         className={classes(
           "grid grid-cols-4 grid-rows-5 p-2.5 gap-2 absolute top-7 right-1 md:right-2 w-80 h-96 rounded-xl blur border",
-          { "bg-opacity-50 bg-gray-300 border-gray-400  text-dark": bgColor !== "dark" },
+          {
+            "bg-opacity-50 bg-gray-300 border-gray-400  text-dark":
+              bgColor !== "dark",
+          },
           {
             "bg-opacity-40 bg-gray-700 border-gray-500 text-white":
               bgColor === "dark",
@@ -252,21 +280,21 @@ function SwitchMenu(props) {
             { "bg-gray-300 text-gray-600": bgColor !== "dark" }
           )}
         >
-          <FaKeyboard className='flex-shrink-0  w-5 h-5'/>
-          <div className="flex-1 text-xs " style={{lineHeight:'0.9rem'}}>
+          <FaKeyboard className="flex-shrink-0  w-5 h-5" />
+          <div className="flex-1 text-xs " style={{ lineHeight: "0.9rem" }}>
             Keybroad Brightness
           </div>
         </div>
         <div
-        onClick={()=>console.log('Full screen')}
+          onClick={() => console.log("Full screen")}
           className={classes(
             "col-span-1 rounded-xl flex flex-col items-center justify-between text-center p-2 control-shadow cursor-pointer",
             { "bg-gray-600 ": bgColor === "dark" },
             { "bg-gray-300 text-gray-600": bgColor !== "dark" }
           )}
         >
-          <BsFullscreen className='flex-shrink-0 mb-1  w-4 h-4'/>
-          <div className="flex-1 text-xs " style={{lineHeight:'0.9rem'}}>
+          <BsFullscreen className="flex-shrink-0 mb-1  w-4 h-4" />
+          <div className="flex-1 text-xs " style={{ lineHeight: "0.9rem" }}>
             Enter Fullscreen
           </div>
         </div>
@@ -278,13 +306,13 @@ function SwitchMenu(props) {
           )}
         >
           <div className="flex-shrink-0 text-sm">Display</div>
-          <Slider 
-          change={handleChangeBright} 
-          icon={<WiDaySunny/>}
-          bgColor={bgColor}
-          min={40}
-          max={130}
-          value={brightness}
+          <Slider
+            change={handleChangeBright}
+            icon={<WiDaySunny />}
+            bgColor={bgColor}
+            min={40}
+            max={130}
+            value={brightness}
           />
         </div>
         <div
@@ -295,38 +323,39 @@ function SwitchMenu(props) {
           )}
         >
           <div className="flex-shrink-0 text-sm">Sound</div>
-          <Slider 
-          change={handleChangeSound} 
-          icon={<AiFillSound/>}
-          bgColor={bgColor}
-          min={1}
-          max={100}
-          value={lound}
+          <Slider
+            change={handleChangeSound}
+            icon={<AiFillSound />}
+            bgColor={bgColor}
+            min={1}
+            max={100}
+            value={lound}
           />
         </div>
         <div
-        onClick= {()=>handlePlayMusic()}
+          onClick={() => handlePlayMusic()}
           className={classes(
             "col-span-4 rounded-xl flex items-center justify-between p-2 space-x-2 control-shadow cursor-pointer",
             { "bg-gray-600 ": bgColor === "dark" },
             { "bg-gray-300 text-gray-600": bgColor !== "dark" }
           )}
         >
-         <img 
-         src="https://p1.music.126.net/z0IO1vEsowL9mD_5yzUjeA==/109951163936068098.jpg" 
-         alt="Music"
-         className='flex-shrink-0 h-full object-cover object-center rounded-xl'
-         /> 
-         <div className="flex-1 flex flex-col justify-center">
-           <div className="text-base leading-4">Sunflower</div>
-           <div className="opacity-50">Post Malone / Swae Lee</div>
-         </div>
-         <div className="flex-shrink flex justify-center items-center ">
-           { playMusic ?
-             <BsFillPauseFill className='w-8 h-8'/> :
-             <BsFillPlayFill className='w-8 h-8'/>
-           } 
-         </div>
+          <img
+            src="https://p1.music.126.net/z0IO1vEsowL9mD_5yzUjeA==/109951163936068098.jpg"
+            alt="Music"
+            className="flex-shrink-0 h-full object-cover object-center rounded-xl"
+          />
+          <div className="flex-1 flex flex-col justify-center">
+            <div className="text-base leading-4">Sunflower</div>
+            <div className="opacity-50">Post Malone / Swae Lee</div>
+          </div>
+          <div className="flex-shrink flex justify-center items-center ">
+            {playMusic ? (
+              <BsFillPauseFill className="w-8 h-8" />
+            ) : (
+              <BsFillPlayFill className="w-8 h-8" />
+            )}
+          </div>
         </div>
       </div>
     </div>
