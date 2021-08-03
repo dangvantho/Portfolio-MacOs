@@ -98,7 +98,7 @@ export const projects = [
     time: "May 2021",
     title: "I made it when I was internship in Saishunkan company with Backend position. I work with other but his take a break after a few days, so I finished it alone. Website allows registration(Confirmation via email), login, ticket purchase (Confirmation via email), manage ticket catalogs, flight categories, ... ",
     technical: ["nodejs", "postgresql", "vuejs", "MaterialUi"],
-    link:'',
+    link:'https://github.com/dangvantho/intership_NodeJs',
     demo:'#',
   },
   {

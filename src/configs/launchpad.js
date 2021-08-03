@@ -20,7 +20,7 @@ export const myApps= [
     {
         name:'Airlines',
         img: Flight,
-        link: '#'
+        link: 'https://github.com/dangvantho/intership_NodeJs'
     },
     {
         name: "Bookstore",
