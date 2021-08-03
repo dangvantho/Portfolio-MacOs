@@ -5,7 +5,7 @@ import DockItem from "./DockItem";
 function Dock(props) {
   const { apps, openApp, onResetMaximum, toggleLaunchpad } = props;
   return (
-    <div className="fixed w-full bottom-0 left-0 flex justify-center z-20">
+    <div className="fixed w-full bottom-0 left-0 flex justify-center " style={{zIndex: 300}}>
       <ul
         className="bg-white bg-opacity-40 list-none flex justify-center items-center px-2 h-14 md:h-16 md:px-4 gap-x-2 rounded-t-xl"
         // style={{ height: "65px" }}

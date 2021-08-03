@@ -24,9 +24,9 @@ function classes(...names) {
   });
   return result.join(" ");
 }
-function AboutMe() {
+function AboutMe(props) {
   return (
-    <div className="h-full w-full px-3 overflow-y-auto pb-3">
+    <div {...props} className="h-full w-full px-3 overflow-y-auto pb-3"  >
       <div className="flex mx-auto h-16 w-16 rounded-full bg-white mt-2 mb-4">
         <img src={imgMoji} alt="Đặng Văn Thọ" className="" />
       </div>
@@ -58,38 +58,38 @@ function AboutMe() {
               href="tel:0327910404"
               target="_blank"
               rel="noreferrer"
-              title='Phone number: 0327910404'
+              title="Phone number: 0327910404"
               className="text-base text-gray-300 hover:text-white transition "
             >
               Phone number
             </a>
           </li>
           {contacts.map((item) => (
-            <li className="flex items-center space-x-2">
-            <img
-              src={item.img}
-              alt={item.name}
-              className="w-6 h-6 object-cover bg-gray-100 rounded-full"
-            />
-            <a
-              href={item.link}
-              target="_blank"
-              rel="noreferrer"
-              title={item.link}
-              className="text-base text-gray-300 hover:text-white transition "
-            >
-              {item.name}
-            </a>
-          </li>
+            <li className="flex items-center space-x-2" key={item.name}>
+              <img
+                src={item.img}
+                alt={item.name}
+                className="w-6 h-6 object-cover bg-gray-100 rounded-full"
+              />
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noreferrer"
+                title={item.link}
+                className="text-base text-gray-300 hover:text-white transition "
+              >
+                {item.name}
+              </a>
+            </li>
           ))}
         </ul>
       </div>
     </div>
   );
 }
-function Education() {
+function Education(props) {
   return (
-    <div className="h-full w-full px-3">
+    <div {...props} className="h-full w-full px-3">
       <div className="text-center text-2xl mt-2  font-semibold ">Education</div>
       <div className="flex mx-auto mt-3 mb-8 w-28 border border-solid"></div>
       <div className="text-lg pl-2 font-medium">
@@ -105,13 +105,13 @@ function Education() {
 }
 
 function Skills(props) {
-  const { width }= props
-  function changeWidth(width){
-    const number= (width+'').replace('px','') - 0
-    return number
+  const { width, style } = props;
+  function changeWidth(width) {
+    const number = (width + "").replace("px", "") - 0;
+    return number;
   }
   return (
-    <div className="h-full w-full px-3">
+    <div {...props} className="h-full w-full px-3">
       <div className="text-center text-2xl mt-2  font-semibold ">
         Technical Skills
       </div>
@@ -162,11 +162,13 @@ function Skills(props) {
             </div>
           ))}
         </div>
-        <div className={classes(
-          "space-y-3 ",
-          { 'col-span-2': changeWidth(width) <= 600 },
-          {'col-span-1': changeWidth(width) > 600}
-        )}>
+        <div
+          className={classes(
+            "space-y-3 ",
+            { "col-span-2": changeWidth(width) <= 600 },
+            { "col-span-1": changeWidth(width) > 600 }
+          )}
+        >
           <div className="text-base text-center font-medium ">
             Database management system
           </div>
@@ -191,9 +193,9 @@ function Skills(props) {
   );
 }
 
-function Projects() {
+function Projects(props) {
   return (
-    <div className="h-full w-full overflow-y-auto px-3">
+    <div {...props} className="h-full w-full overflow-y-auto px-3 ">
       <div className="text-center text-2xl mt-2  font-semibold ">Projects</div>
       <div className="flex mx-auto mt-3 mb-6 w-28 border border-solid"></div>
       {projects.map((item) => (
@@ -245,7 +247,7 @@ function Projects() {
 }
 
 function Bear(props) {
-  const { width }= props
+  const { width } = props;
   const [currentTab, setCurrentTab] = useState(0);
   function handleOpenTab(index) {
     setCurrentTab(index);
@@ -255,19 +257,19 @@ function Bear(props) {
     let tab;
     switch (index) {
       case 0:
-        tab = <AboutMe />;
+        tab = <AboutMe style={{maxWidth: 700}} />;
         break;
       case 1:
-        tab = <Education />;
+        tab = <Education style={{maxWidth: 700}} />;
         break;
       case 2:
-        tab = <Skills width={width}/>;
+        tab = <Skills width={width} style={{maxWidth: 700}} />;
         break;
       case 3:
         tab = <Projects />;
         break;
       default:
-        tab = <AboutMe />;
+        tab = <AboutMe style={{maxWidth: 700}}/>;
     }
     return tab;
   }
@@ -319,7 +321,7 @@ function Bear(props) {
           <span>Projects</span>
         </div>
       </div>
-      <div className="flex-1 bg-gray-700 text-white overflow-y-auto">
+      <div className="flex-1 bg-gray-700 text-white overflow-y-auto flex justify-center">
         {renderTab(currentTab, width)}
       </div>
     </div>

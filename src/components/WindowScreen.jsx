@@ -16,68 +16,81 @@ function WindowScreen(props) {
     apps,
     onMinimum,
     onMaximum,
+    show
   } = props;
   const [isClose, setIsClose] = useState(false);
   const [index, setIndex] = useState(zIndex);
   const [hoverWindowBar, setHoverWindowBar] = useState(false);
-  const oldSize= useRef({
+  const oldSize = useRef({
     width: 600,
     height: 500,
-    x: 60,
-    y: 80
-  })
+    ...randomPosition(),
+  });
   const [positon, setPosition] = useState({
-    x: 60,
-    y: 80
+    x: oldSize.current.x,
+    y: oldSize.current.y,
   });
   const [size, setSize] = useState({
     width: 600,
     height: 500,
   });
-  
+  function randomPosition(){
+    return {
+      x: Math.floor(Math.random() * 100),
+      y: Math.floor(Math.random() * 100),
+    }
+  }
   function handleDragStop(e, d) {
     let { x, y } = d;
     setPosition({ x, y });
   }
-  function handleChangeMinimum() {
-    onMinimum(appId)
-    oldSize.current= { ...oldSize.current, width: size.width, height: size.height}
+  function handleChangeMinimum(e) {
+    onMinimum(appId,e);
+    oldSize.current = {
+      ...oldSize.current,
+      width: size.width,
+      height: size.height,
+    };
   }
-  useEffect(() => {
-    setIndex(zIndex);
-  }, [zIndex]);
-  useEffect(() => {
-    const app = apps.find((item) => item.id === appId && item.show);
-    if (!app) {
-      setIsClose(true);
-    }
-    if (app && isClose) {
-      setIsClose(false);
-    }
-  }, [apps]);
+  // useEffect(() => {
+  //   setIndex(zIndex);
+  // }, [zIndex]);
+  // useEffect(() => {
+  //   const app = apps.find((item) => item.id === appId && item.show);
+  //   if (!app) {
+  //     setIsClose(true);
+  //   }
+  //   if (app && isClose) {
+  //     setIsClose(false);
+  //   }
+  // }, [apps]);
   useEffect(()=>{
-    if(maximum){
-      const width= window.innerWidth
-      const height= window.innerHeight
+    setIsClose(!show)
+  },[show])
+  useEffect(() => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    // console.log(width, height, oldSize)
+    if (maximum) {
       setSize({
         width,
         height,
-      })
+      });
       setPosition({
         x: 0,
-        y: -24
-      })
-    }else{
+        y: -24,
+      });
+    } else if(width===oldSize.current.width && height===oldSize.current.height) {
       setSize({
         width: oldSize.current.width,
         height: oldSize.current.height,
-      })
+      });
       setPosition({
         x: oldSize.current.x,
-        y: -24
-      })
+        y: -24,
+      });
     }
-  },[maximum])
+  }, [maximum, minimum]);
   return (
     <React.Fragment>
       {!isClose && (
@@ -87,10 +100,10 @@ function WindowScreen(props) {
           position={{ x: positon.x, y: positon.y }}
           onDragStop={handleDragStop}
           onResizeStop={(e, direction, ref, delta, position) => {
-            oldSize.current= {
+            oldSize.current = {
               width: ref.style.width,
-              height: ref.style.height
-            }
+              height: ref.style.height,
+            };
             setSize({
               width: ref.style.width,
               height: ref.style.height,
@@ -99,7 +112,7 @@ function WindowScreen(props) {
           className={minimum ? "invisible" : "visible"}
           dragHandleClassName="window-bar"
           style={{
-            zIndex: maximum? 999: index,
+            zIndex: maximum ? 1000 : zIndex,
           }}
         >
           <div
@@ -107,35 +120,45 @@ function WindowScreen(props) {
             className="window-bar text-center h-6 flex items-center justify-center relative w-full bg-gray-200 rounded-t-lg"
           >
             <div
-              className="absolute left-2 top-1/2 transform -translate-y-1/2  flex items-center space-x-2"
+              className="absolute left-3 md:left-2 top-1/2 transform -translate-y-1/2  flex items-center space-x-2"
               onMouseOver={() => setHoverWindowBar(true)}
               onMouseLeave={() => setHoverWindowBar(false)}
             >
-              <button className="w-3 h-3 rounded-full bg-red-500 flex items-center justify-center">
+              <button
+                onClick={(e) => close(appId,e)}
+                className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-red-500 flex items-center justify-center"
+              >
                 <IoClose
-                  className={hoverWindowBar ? "h-3 w-3" : "h-3 w-3 invisible"}
-                  onClick={() => close(appId)}
+                  className={
+                    hoverWindowBar
+                      ? "w-4 h-4 md:w-3 md:h-3"
+                      : "w-4 h-4 md:w-3 md:h-3 invisible"
+                  }
                 />
               </button>
               <button
                 onClick={handleChangeMinimum}
-                className="w-3 h-3 rounded-full bg-yellow-500 flex items-center justify-center"
-                style={minimum ? { background: '#adadad'}: {}}
+                className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-yellow-500 flex items-center justify-center"
+                style={minimum ? { background: "#adadad" } : {}}
               >
                 <VscChromeMinimize
-                  className={!hoverWindowBar || minimum ? "h-3 w-3 invisible" : "h-3 w-3"}
+                  className={
+                    !hoverWindowBar || minimum
+                      ? "w-4 h-4 md:w-3 md:h-3 invisible"
+                      : "w-4 h-4 md:w-3 md:h-3"
+                  }
                 />
               </button>
               <button
-                onClick={() => onMaximum(appId)}
-                className="w-3 h-3 rounded-full bg-green-500 flex items-center justify-center"
-                style={maximum ? { background: '#adadad'}: {}}
+                onClick={(e) => onMaximum(appId, e)}
+                className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-green-500 flex items-center justify-center"
+                style={maximum ? { background: "#adadad" } : {}}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
-                  className={!hoverWindowBar || maximum? "invisible" : ""}
+                  className={!hoverWindowBar || maximum ? "invisible" : ""}
                   viewBox="0 0 21.961 21.244"
                 >
                   <g

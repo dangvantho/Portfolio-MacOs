@@ -28,7 +28,10 @@ function System() {
     dispatch(toggleShutdown());
   }
   return (
-    <ul className="list-none absolute top-full left-0 w-56 bg-gray-200 bg-opacity-80 blur rounded-b-md control-shadow">
+    <ul 
+    className="list-none absolute top-full left-0 w-56 bg-gray-200 bg-opacity-80 blur rounded-b-md control-shadow"
+    style={{zIndex: 999}}
+    >
       <li className="border-b-2 px-4 mt-1 hover:bg-blue-500 hover:text-gray-200 leading-6 text-base text-gray-900 border-gray-600 ">
         About This Mac
       </li>

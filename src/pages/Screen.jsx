@@ -22,45 +22,89 @@ function Screen(props) {
       return;
     }
     dispatch(openApp(id));
-
-    let dup = appWindows.find((item) => item.id === id);
+    let dup 
+    let maxZIndex= 0
+    for(let i=0; i< appWindows.length; i++){
+      //Find MaxIndex
+      if(appWindows[i].zIndex > maxZIndex) {
+        maxZIndex= appWindows[i].zIndex
+      }
+      //Reset zIndex
+      if (appWindows[i].maximum) {
+        appWindows[i].maximum = false;
+      }
+      appWindows[i].zIndex= 10+i
+      //Find duplicate
+      if(appWindows[i].id===id){
+        dup= i
+      }
+    }
     if (dup) {
+      const newAppWindows= [...appWindows]
+      newAppWindows[dup].show= !newAppWindows[dup].show
+      setAppWindows(newAppWindows)
       return;
     }
+    
     app = {
       ...app,
-      zIndex: appWindows.length + 10,
+      zIndex: maxZIndex + 1,
       minimum: false,
       maximum: false,
       show: true,
-      maxZIndex: appWindows[0] ? appWindows[0].maxZIndex + 1 : 11,
+      // maxZIndex: appWindows[0] ? appWindows[0].maxZIndex + 1 : 11,
     };
     const newAppWindows = [...appWindows, app];
-    for (let app of newAppWindows) {
-      if (app.maximum) {
-        app.maximum = false;
-      }
-    }
+    // for (let app of newAppWindows) {
+    //   if (app.maximum) {
+    //     app.maximum = false;
+    //   }
+    // }
+    console.log(newAppWindows)
     setAppWindows(newAppWindows);
   }
-  function handleCloseApp(id) {
-    let app = appWindows.filter((x) => x.id !== id);
-    dispatch(closeApp(id));
-    setAppWindows(app);
-  }
-  function handleChangeIndex(id) {
-    let newApps = [...appWindows];
-    for (let item of newApps) {
-      if (item.id !== id) {
-        ++item.maxZIndex;
-      } else {
-        ++item.maxZIndex;
-        item.zIndex = item.maxZIndex;
+  function handleCloseApp(id,e) {
+    console.log('Closed app')
+    e.stopPropagation()
+    // let app = appWindows.filter((x) => x.id !== id);
+    let apps=[...appWindows]
+    for(let app of apps){
+      if(app.id === id){
+        app.show= false
       }
     }
+    dispatch(closeApp(id));
+    setAppWindows(apps);
+  }
+  function handleChangeIndex(id) {
+    console.log('change zIndex')
+    let max= 10
+    let index=0
+    let newApps = [...appWindows];
+    // for (let item of newApps) {
+    //   if (item.id !== id) {
+    //     ++item.maxZIndex;
+    //   } else {
+    //     ++item.maxZIndex;
+    //     item.zIndex = item.maxZIndex;
+    //   }
+    // }
+    for(let i=0; i< newApps.length;  i++){
+      if(newApps[i].id!==id){
+        if(max < newApps[i].zIndex){
+          max= newApps[i].zIndex
+        }
+        --newApps[i].zIndex
+      }else{
+        index= i
+      }
+    }
+    appWindows[index].zIndex= max + 1
+    console.log(index, newApps)
     setAppWindows(newApps);
   }
-  function handleMinimum(id) {
+  function handleMinimum(id, e) {
+    e.stopPropagation()
     const apps = [...appWindows];
     for (let app of apps) {
       if (app.id === id) {
@@ -68,9 +112,11 @@ function Screen(props) {
         app.maximum = false;
       }
     }
+    console.log('minimum')
     setAppWindows(apps);
   }
-  function handleMaximum(id) {
+  function handleMaximum(id, e) {
+    e.stopPropagation()
     const apps = [...appWindows];
     for (let app of apps) {
       if (app.id === id) {
@@ -78,17 +124,12 @@ function Screen(props) {
         app.maximum = true;
       }
     }
+    console.log('maximum')
     setAppWindows(apps);
   }
   function handleResetMaximum(id) {
-    const newApps = [...appWindows];
-    for (let app of newApps) {
-      if (app.maximum) {
-        app.maximum = false;
-      }
-      if (app.id === id) {
-        app.minimum = false;
-      }
+    if(appWindows.length===0){
+      return
     }
     handleChangeIndex(id);
   }
@@ -122,9 +163,9 @@ function Screen(props) {
     >
       <Header />
       <div className="window-app overflow-auto ">
-        {appWindows.map((app) => (
+        {appWindows.map((app,index) => (
           <WindowScreen
-            key={app.id}
+            key={index}
             content={app.content}
             title={app.title}
             close={handleCloseApp}
@@ -135,6 +176,7 @@ function Screen(props) {
             zIndex={app.zIndex}
             onMinimum={handleMinimum}
             onMaximum={handleMaximum}
+            show= {app.show}
           />
         ))}
       </div>
