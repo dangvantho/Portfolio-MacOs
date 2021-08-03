@@ -16,12 +16,10 @@ const backgroundSlice = createSlice({
   },
   reducers: {
     slideBrightness(state, action) {
-        console.log(state.lound,'state')
         state.brightness = action.payload;
     },
     slideSound(state, action) {
         state.lound = action.payload;
-        console.log(state.lound)
     },
     toggleBackground(state, action) {
       if (state.bgImg === "dark") {

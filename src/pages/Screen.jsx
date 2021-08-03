@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import WindowScreen from "../components/WindowScreen";
+import Launchpad from "../components/Apps/Launchpad";
 import bgDark from "../assets/wallpaper-night.jpg";
 import bgLight from "../assets/wallpaper-day.jpg";
 import Dock from "../components/Dock/Dock";
@@ -12,6 +13,7 @@ import { closeApp, openApp } from "../app/reducers/apps.reducer";
 function Screen(props) {
   const { bg, apps } = props;
   const [appWindows, setAppWindows] = useState([]);
+  const [launchpad, setLaunchpad] = useState(false);
   const dispatch = useDispatch();
   const audio = useRef();
   function createApp(id) {
@@ -34,16 +36,15 @@ function Screen(props) {
       maxZIndex: appWindows[0] ? appWindows[0].maxZIndex + 1 : 11,
     };
     const newAppWindows = [...appWindows, app];
-    for(let app of newAppWindows){
-      if(app.maximum){
-        app.maximum= false
+    for (let app of newAppWindows) {
+      if (app.maximum) {
+        app.maximum = false;
       }
     }
     setAppWindows(newAppWindows);
   }
   function handleCloseApp(id) {
     let app = appWindows.filter((x) => x.id !== id);
-    console.log("app", app);
     dispatch(closeApp(id));
     setAppWindows(app);
   }
@@ -57,44 +58,42 @@ function Screen(props) {
         item.zIndex = item.maxZIndex;
       }
     }
-    console.log("newApps", newApps);
     setAppWindows(newApps);
   }
   function handleMinimum(id) {
-    const apps= [...appWindows]
-    for(let app of apps){
-      if(app.id===id){
-        app.minimum= !app.minimum
-        app.maximum= false
+    const apps = [...appWindows];
+    for (let app of apps) {
+      if (app.id === id) {
+        app.minimum = !app.minimum;
+        app.maximum = false;
       }
     }
-    console.log('minimum', apps)
-    setAppWindows(apps)
+    setAppWindows(apps);
   }
   function handleMaximum(id) {
-    const apps= [...appWindows]
-    for(let app of apps){
-      if(app.id===id){
-        app.minimum= false
-        app.maximum= true
+    const apps = [...appWindows];
+    for (let app of apps) {
+      if (app.id === id) {
+        app.minimum = false;
+        app.maximum = true;
       }
     }
-    console.log('minimum', apps)
-    setAppWindows(apps)
+    setAppWindows(apps);
   }
-  function handleResetMaximum(id){
-    const newApps= [...appWindows]
-    for(let app of newApps){
-      if(app.maximum){
-        app.maximum= false
+  function handleResetMaximum(id) {
+    const newApps = [...appWindows];
+    for (let app of newApps) {
+      if (app.maximum) {
+        app.maximum = false;
       }
-      if(app.id===id){
-        app.minimum= false
+      if (app.id === id) {
+        app.minimum = false;
       }
     }
-    handleChangeIndex(id)
+    handleChangeIndex(id);
   }
   useEffect(() => {
+    createApp("bear");
     if (audio.current) {
       audio.current.src = music;
       audio.current.onended = function () {
@@ -103,7 +102,6 @@ function Screen(props) {
     }
   }, []);
   useEffect(() => {
-    console.log(bg.playMusic);
     audio.current.volume = bg.lound / 100;
     if (bg.playMusic) {
       audio.current.play();
@@ -111,9 +109,6 @@ function Screen(props) {
       audio.current.pause();
     }
   }, [bg.playMusic, bg.lound]);
-  useEffect(() => {
-    console.log(apps, appWindows);
-  }, [apps]);
   return (
     <div
       style={{
@@ -139,11 +134,17 @@ function Screen(props) {
             changeZIndex={handleChangeIndex}
             zIndex={app.zIndex}
             onMinimum={handleMinimum}
-            onMaximum= {handleMaximum}
+            onMaximum={handleMaximum}
           />
         ))}
       </div>
-      <Dock openApp={createApp} onResetMaximum={handleResetMaximum} onChangeIndex={handleChangeIndex}/>
+      <Dock
+        openApp={createApp}
+        onResetMaximum={handleResetMaximum}
+        onChangeIndex={handleChangeIndex}
+        toggleLaunchpad={() => setLaunchpad(!launchpad)}
+      />
+      {launchpad && <Launchpad toggleLaunchpad={()=>setLaunchpad(!launchpad)} />}
       <audio className="fixed top-0 left-0" ref={audio}></audio>
     </div>
   );

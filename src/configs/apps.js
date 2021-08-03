@@ -2,12 +2,14 @@ import launchpad from "../assets/launchpad.png"
 import bear from '../assets/bear.png'
 import safari from '../assets/safari.png'
 import vscode from '../assets/vscode.png'
-import facetime from '../assets/facetime.png'
+import spotify from '../assets/spotify.png'
 import mail from '../assets/mail.png'
 import github from '../assets/github.png'
 import Bear from '../components/Apps/Bear'
 import VSCode from "../components/Apps/VSCode";
 import Safari from '../components/Apps/Safari'
+import Spotify from "../components/Apps/Spotify"
+
 const apps = [
     {
       id: "launchpad",
@@ -45,13 +47,13 @@ const apps = [
       content: (props)=> <VSCode {...props} />
     },
     {
-      id: "facetime",
-      title: "FaceTime",
+      id: "spotify",
+      title: "Spotify",
       desktop: true,
       show: false,
-      img: facetime,
+      img: spotify,
       height: 530,
-    //   content: <FaceTime />
+      content: <Spotify/>
     },
     {
       id: "email",

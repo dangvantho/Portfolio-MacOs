@@ -1,12 +1,11 @@
 import React, {  useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { IoLogoApple } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleBoot, toggleRestart } from "../app/reducers/background.reducer";
 
-Shutdown.propTypes = {};
 
-function Shutdown(props) {
+
+function Shutdown() {
   const distpatch = useDispatch();
   const bg= useSelector(state=>state.background)
   const [boot, setBoot] = useState(false)

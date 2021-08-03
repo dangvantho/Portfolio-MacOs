@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {
   toggleLogin,
   toggleShutdown,
@@ -9,8 +8,6 @@ import { useDispatch } from "react-redux";
 import bgLight from "../assets/wallpaper-day.jpg";
 import avatar from "../assets/avatar.jpg";
 import { RiShutDownLine, RiRestartLine } from "react-icons/ri";
-
-Login.propTypes = {};
 
 function Login(props) {
   const dispatch = useDispatch();
@@ -35,7 +32,6 @@ function Login(props) {
         className="w-28 h-28 rounded-full -mt-12"
       />
       <div className="text-base text-center">
-        Xin chào{" "}
         <span className="text-base font-semibold block">Dang Van Hoi</span>
       </div>
       <div

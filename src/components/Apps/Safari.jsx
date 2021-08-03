@@ -64,6 +64,7 @@ function Safari(props) {
             <div className=" mt-12 px-5 safari-content ">
               {contacts.map((item) => (
                 <a
+                  key={item.link}
                   target="_blank"
                   href={item.link}
                   rel="noreferrer"
@@ -88,6 +89,7 @@ function Safari(props) {
             <div className=" mt-12 px-5 safari-content gap-6">
               {frequently.map((item) => (
                 <a
+                  key={item.link}
                   target="_blank"
                   href={item.link}
                   rel="noreferrer"

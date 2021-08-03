@@ -1,13 +1,9 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import DockItem from "./DockItem";
 
-Dock.propTypes = {};
-
 function Dock(props) {
-  const { apps, openApp, onResetMaximum } = props;
-  useEffect(()=>{}, [apps])
+  const { apps, openApp, onResetMaximum, toggleLaunchpad } = props;
   return (
     <div className="fixed w-full bottom-0 left-0 flex justify-center z-20">
       <ul
@@ -24,6 +20,7 @@ function Dock(props) {
             openApp={openApp}
             show= {app.show}
             onResetMaximum={onResetMaximum}
+            toggleLaunchpad={toggleLaunchpad}
           />
         ))}
       </ul>

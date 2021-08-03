@@ -6,12 +6,9 @@ const appsSlice= createSlice({
     initialState: apps,
     reducers:{
         openApp: (state, action)=>{
-            console.log(action)
-            console.log(state)
             let newApp= state.map(app=>{
                 if(app.id===action.payload){
                     app= {...app, show: true}
-                    console.log(app.show, app.id)
                 }
                 return app
             })

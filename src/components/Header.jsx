@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "../configs/classes.lib";
-import PropTypes from "prop-types";
 import { SiApple } from "react-icons/si";
 import { FaWifi, FaBluetoothB, FaKeyboard } from "react-icons/fa";
 import { IoBatteryFullSharp, IoSearch } from "react-icons/io5";
@@ -22,7 +21,6 @@ import {
   toggleShutdown,
 } from "../app/reducers/background.reducer";
 
-Header.propTypes = {};
 function System() {
   const dispatch = useDispatch();
   function handleRestart() {
@@ -189,7 +187,10 @@ function SwitchMenu(props) {
     dispatch(togglePlayMusic());
   }
   return (
-    <div className="fixed top-0 bottom-0 left-0 right-0 bg-transparent">
+    <div
+      className="fixed top-0 bottom-0 left-0 right-0 bg-transparent"
+      style={{ zIndex: 300 }}
+    >
       <div
         onClick={toggle}
         className="absolute top-0 bottom-0 left-0 right-0 bg-transparent"

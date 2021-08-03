@@ -1,9 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
-VSCode.propTypes = {
-    
-};
 
 function VSCode(props) {
     return (
