@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Portfolio-MacOs/static/css/main.7c554155.chunk.css",
-    "main.js": "/Portfolio-MacOs/static/js/main.1c7c0015.chunk.js",
-    "main.js.map": "/Portfolio-MacOs/static/js/main.1c7c0015.chunk.js.map",
+    "main.css": "/Portfolio-MacOs/static/css/main.a452413d.chunk.css",
+    "main.js": "/Portfolio-MacOs/static/js/main.09d0d99e.chunk.js",
+    "main.js.map": "/Portfolio-MacOs/static/js/main.09d0d99e.chunk.js.map",
     "runtime-main.js": "/Portfolio-MacOs/static/js/runtime-main.529cbea0.js",
     "runtime-main.js.map": "/Portfolio-MacOs/static/js/runtime-main.529cbea0.js.map",
-    "static/js/2.a427418f.chunk.js": "/Portfolio-MacOs/static/js/2.a427418f.chunk.js",
-    "static/js/2.a427418f.chunk.js.map": "/Portfolio-MacOs/static/js/2.a427418f.chunk.js.map",
+    "static/js/2.c5d554ad.chunk.js": "/Portfolio-MacOs/static/js/2.c5d554ad.chunk.js",
+    "static/js/2.c5d554ad.chunk.js.map": "/Portfolio-MacOs/static/js/2.c5d554ad.chunk.js.map",
     "index.html": "/Portfolio-MacOs/index.html",
-    "static/css/main.7c554155.chunk.css.map": "/Portfolio-MacOs/static/css/main.7c554155.chunk.css.map",
-    "static/js/2.a427418f.chunk.js.LICENSE.txt": "/Portfolio-MacOs/static/js/2.a427418f.chunk.js.LICENSE.txt",
+    "static/css/main.a452413d.chunk.css.map": "/Portfolio-MacOs/static/css/main.a452413d.chunk.css.map",
+    "static/js/2.c5d554ad.chunk.js.LICENSE.txt": "/Portfolio-MacOs/static/js/2.c5d554ad.chunk.js.LICENSE.txt",
     "static/media/audio.e05c841b.mp3": "/Portfolio-MacOs/static/media/audio.e05c841b.mp3",
     "static/media/avatar.27b81f0b.jpg": "/Portfolio-MacOs/static/media/avatar.27b81f0b.jpg",
     "static/media/bear.4b72ee14.png": "/Portfolio-MacOs/static/media/bear.4b72ee14.png",
@@ -38,8 +38,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.529cbea0.js",
-    "static/js/2.a427418f.chunk.js",
-    "static/css/main.7c554155.chunk.css",
-    "static/js/main.1c7c0015.chunk.js"
+    "static/js/2.c5d554ad.chunk.js",
+    "static/css/main.a452413d.chunk.css",
+    "static/js/main.09d0d99e.chunk.js"
   ]
 }
