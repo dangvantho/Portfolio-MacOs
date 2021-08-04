@@ -189,39 +189,31 @@ function WindowScreen(props) {
         >
           <button
             onClick={(e) => close(appId, e)}
-            className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-red-500 flex items-center justify-center"
+            className="w-4 h-4 rounded-full bg-red-500 flex items-center justify-center"
           >
             <IoClose
-              className={
-                hoverWindowBar
-                  ? "w-4 h-4 md:w-3 md:h-3"
-                  : "w-4 h-4 md:w-3 md:h-3 invisible"
-              }
+              className="w-4 h-4"
             />
           </button>
           <button
             onClick={handleChangeMinimum}
-            className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-yellow-500 flex items-center justify-center"
+            className="w-4 h-4 rounded-full bg-yellow-500 flex items-center justify-center"
             style={minimum ? { background: "#adadad" } : {}}
           >
             <VscChromeMinimize
-              className={
-                !hoverWindowBar || minimum
-                  ? "w-4 h-4 md:w-3 md:h-3 invisible"
-                  : "w-4 h-4 md:w-3 md:h-3"
-              }
+              className="w-4 h-4"
             />
           </button>
           <button
             onClick={(e) => onMaximum(appId, e)}
-            className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-green-500 flex items-center justify-center"
+            className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center"
             style={maximum ? { background: "#adadad" } : {}}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="16"
-              className={!hoverWindowBar || maximum ? "invisible" : ""}
+              className={ maximum ? "invisible" : ""}
               viewBox="0 0 21.961 21.244"
             >
               <g
