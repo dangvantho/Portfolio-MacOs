@@ -29,44 +29,37 @@ function Screen(props) {
       if(appWindows[i].zIndex > maxZIndex) {
         maxZIndex= appWindows[i].zIndex
       }
-      //Reset zIndex
+      //Reset maximum
       if (appWindows[i].maximum) {
         appWindows[i].maximum = false;
       }
-      appWindows[i].zIndex= 10+i
       //Find duplicate
       if(appWindows[i].id===id){
         dup= i
+        break
       }
     }
-    if (dup) {
+    if (dup!==undefined) {
       const newAppWindows= [...appWindows]
       newAppWindows[dup].show= !newAppWindows[dup].show
+      newAppWindows[dup].minimum= false
       setAppWindows(newAppWindows)
       return;
     }
-    
     app = {
       ...app,
       zIndex: maxZIndex + 1,
       minimum: false,
       maximum: false,
       show: true,
-      // maxZIndex: appWindows[0] ? appWindows[0].maxZIndex + 1 : 11,
     };
     const newAppWindows = [...appWindows, app];
-    // for (let app of newAppWindows) {
-    //   if (app.maximum) {
-    //     app.maximum = false;
-    //   }
-    // }
     console.log(newAppWindows)
     setAppWindows(newAppWindows);
   }
   function handleCloseApp(id,e) {
     console.log('Closed app')
     e.stopPropagation()
-    // let app = appWindows.filter((x) => x.id !== id);
     let apps=[...appWindows]
     for(let app of apps){
       if(app.id === id){
@@ -81,14 +74,6 @@ function Screen(props) {
     let max= 10
     let index=0
     let newApps = [...appWindows];
-    // for (let item of newApps) {
-    //   if (item.id !== id) {
-    //     ++item.maxZIndex;
-    //   } else {
-    //     ++item.maxZIndex;
-    //     item.zIndex = item.maxZIndex;
-    //   }
-    // }
     for(let i=0; i< newApps.length;  i++){
       if(newApps[i].id!==id){
         if(max < newApps[i].zIndex){
@@ -100,7 +85,6 @@ function Screen(props) {
       }
     }
     appWindows[index].zIndex= max + 1
-    console.log(index, newApps)
     setAppWindows(newApps);
   }
   function handleMinimum(id, e) {

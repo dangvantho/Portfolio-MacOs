@@ -52,18 +52,6 @@ function WindowScreen(props) {
       height: size.height,
     };
   }
-  // useEffect(() => {
-  //   setIndex(zIndex);
-  // }, [zIndex]);
-  // useEffect(() => {
-  //   const app = apps.find((item) => item.id === appId && item.show);
-  //   if (!app) {
-  //     setIsClose(true);
-  //   }
-  //   if (app && isClose) {
-  //     setIsClose(false);
-  //   }
-  // }, [apps]);
   useEffect(() => {
     setIsClose(!show);
   }, [show]);
@@ -95,174 +83,170 @@ function WindowScreen(props) {
     }
   }, [maximum, minimum]);
   return (
-    <React.Fragment>
-      {!isClose && (
-        <Rnd
-          // bounds={maximum ? '.screen':".window-app"}
-          size={{ width: size.width, height: size.height }}
-          position={{ x: positon.x, y: positon.y }}
-          onDragStop={handleDragStop}
-          onResizeStop={(e, direction, ref, delta, position) => {
-            oldSize.current = {
-              width: ref.style.width,
-              height: ref.style.height,
-            };
-            setSize({
-              width: ref.style.width,
-              height: ref.style.height,
-            });
-          }}
-          className={minimum ? "invisible" : "visible"}
-          dragHandleClassName="window-bar"
-          style={{
-            zIndex: maximum ? 1000 : zIndex,
-          }}
+    <Rnd
+      // bounds={maximum ? '.screen':".window-app"}
+      size={{ width: size.width, height: size.height }}
+      position={{ x: positon.x, y: positon.y }}
+      onDragStop={handleDragStop}
+      onResizeStop={(e, direction, ref, delta, position) => {
+        oldSize.current = {
+          width: ref.style.width,
+          height: ref.style.height,
+        };
+        setSize({
+          width: ref.style.width,
+          height: ref.style.height,
+        });
+      }}
+      className={minimum || isClose ? "invisible" : "visible"}
+      dragHandleClassName="window-bar"
+      style={{
+        zIndex: maximum ? 1000 : zIndex,
+      }}
+    >
+      <div
+        onClick={() => changeZIndex(appId)}
+        className="window-bar text-center h-6 flex items-center justify-center relative w-full bg-gray-200 rounded-t-lg"
+      >
+        <div
+          className="absolute left-3 md:left-2 top-1/2 transform -translate-y-1/2  flex items-center space-x-2"
+          onMouseOver={() => setHoverWindowBar(true)}
+          onMouseLeave={() => setHoverWindowBar(false)}
         >
-          <div
-            onClick={() => changeZIndex(appId)}
-            className="window-bar text-center h-6 flex items-center justify-center relative w-full bg-gray-200 rounded-t-lg"
+          <button
+            onClick={(e) => close(appId, e)}
+            className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-red-500 flex items-center justify-center"
           >
-            <div
-              className="absolute left-3 md:left-2 top-1/2 transform -translate-y-1/2  flex items-center space-x-2"
-              onMouseOver={() => setHoverWindowBar(true)}
-              onMouseLeave={() => setHoverWindowBar(false)}
-            >
-              <button
-                onClick={(e) => close(appId, e)}
-                className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-red-500 flex items-center justify-center"
-              >
-                <IoClose
-                  className={
-                    hoverWindowBar
-                      ? "w-4 h-4 md:w-3 md:h-3"
-                      : "w-4 h-4 md:w-3 md:h-3 invisible"
-                  }
-                />
-              </button>
-              <button
-                onClick={handleChangeMinimum}
-                className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-yellow-500 flex items-center justify-center"
-                style={minimum ? { background: "#adadad" } : {}}
-              >
-                <VscChromeMinimize
-                  className={
-                    !hoverWindowBar || minimum
-                      ? "w-4 h-4 md:w-3 md:h-3 invisible"
-                      : "w-4 h-4 md:w-3 md:h-3"
-                  }
-                />
-              </button>
-              <button
-                onClick={(e) => onMaximum(appId, e)}
-                className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-green-500 flex items-center justify-center"
-                style={maximum ? { background: "#adadad" } : {}}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  className={!hoverWindowBar || maximum ? "invisible" : ""}
-                  viewBox="0 0 21.961 21.244"
-                >
-                  <g
-                    id="exicon"
-                    data-name="Group 1"
-                    transform="translate(-179.495 -59.374)"
-                  >
-                    <path
-                      id="Path_1"
-                      data-name="Path 1"
-                      d="M6.5,0,13,8H0Z"
-                      transform="matrix(-0.574, -0.819, 0.819, -0.574, 186.952, 80.619)"
-                    />
-                    <path
-                      id="Path_2"
-                      data-name="Path 2"
-                      d="M6.5,0,13,8H0Z"
-                      transform="matrix(0.559, 0.829, -0.829, 0.559, 194.186, 59.374)"
-                    />
-                  </g>
-                </svg>
-              </button>
-            </div>
-            <div className=" font-semibold ">{title}</div>
-          </div>
-          <div
-            onClick={() => changeZIndex(appId)}
-            className="inner-window bg-gray-300 grid grid-cols-1 overflow-auto"
+            <IoClose
+              className={
+                hoverWindowBar
+                  ? "w-4 h-4 md:w-3 md:h-3"
+                  : "w-4 h-4 md:w-3 md:h-3 invisible"
+              }
+            />
+          </button>
+          <button
+            onClick={handleChangeMinimum}
+            className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-yellow-500 flex items-center justify-center"
+            style={minimum ? { background: "#adadad" } : {}}
           >
-            {typeof content === "function"
-              ? content({ width: size.width, height: size.height })
-              : content}
-          </div>
-          <div className="md:hidden absolute top-3 left-0">
-            <div
-              className="absolute left-3 md:left-2 top-1/2 transform -translate-y-1/2  flex items-center space-x-2"
-              onMouseOver={() => setHoverWindowBar(true)}
-              onMouseLeave={() => setHoverWindowBar(false)}
+            <VscChromeMinimize
+              className={
+                !hoverWindowBar || minimum
+                  ? "w-4 h-4 md:w-3 md:h-3 invisible"
+                  : "w-4 h-4 md:w-3 md:h-3"
+              }
+            />
+          </button>
+          <button
+            onClick={(e) => onMaximum(appId, e)}
+            className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-green-500 flex items-center justify-center"
+            style={maximum ? { background: "#adadad" } : {}}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              className={!hoverWindowBar || maximum ? "invisible" : ""}
+              viewBox="0 0 21.961 21.244"
             >
-              <button
-                onClick={(e) => close(appId, e)}
-                className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-red-500 flex items-center justify-center"
+              <g
+                id="exicon"
+                data-name="Group 1"
+                transform="translate(-179.495 -59.374)"
               >
-                <IoClose
-                  className={
-                    hoverWindowBar
-                      ? "w-4 h-4 md:w-3 md:h-3"
-                      : "w-4 h-4 md:w-3 md:h-3 invisible"
-                  }
+                <path
+                  id="Path_1"
+                  data-name="Path 1"
+                  d="M6.5,0,13,8H0Z"
+                  transform="matrix(-0.574, -0.819, 0.819, -0.574, 186.952, 80.619)"
                 />
-              </button>
-              <button
-                onClick={handleChangeMinimum}
-                className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-yellow-500 flex items-center justify-center"
-                style={minimum ? { background: "#adadad" } : {}}
-              >
-                <VscChromeMinimize
-                  className={
-                    !hoverWindowBar || minimum
-                      ? "w-4 h-4 md:w-3 md:h-3 invisible"
-                      : "w-4 h-4 md:w-3 md:h-3"
-                  }
+                <path
+                  id="Path_2"
+                  data-name="Path 2"
+                  d="M6.5,0,13,8H0Z"
+                  transform="matrix(0.559, 0.829, -0.829, 0.559, 194.186, 59.374)"
                 />
-              </button>
-              <button
-                onClick={(e) => onMaximum(appId, e)}
-                className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-green-500 flex items-center justify-center"
-                style={maximum ? { background: "#adadad" } : {}}
+              </g>
+            </svg>
+          </button>
+        </div>
+        <div className=" font-semibold ">{title}</div>
+      </div>
+      <div
+        onClick={() => changeZIndex(appId)}
+        className="inner-window bg-gray-300 grid grid-cols-1 overflow-auto"
+      >
+        {typeof content === "function"
+          ? content({ width: size.width, height: size.height })
+          : content}
+      </div>
+      <div className="md:hidden absolute top-3 left-0">
+        <div
+          className="absolute left-3 md:left-2 top-1/2 transform -translate-y-1/2  flex items-center space-x-2"
+          onMouseOver={() => setHoverWindowBar(true)}
+          onMouseLeave={() => setHoverWindowBar(false)}
+        >
+          <button
+            onClick={(e) => close(appId, e)}
+            className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-red-500 flex items-center justify-center"
+          >
+            <IoClose
+              className={
+                hoverWindowBar
+                  ? "w-4 h-4 md:w-3 md:h-3"
+                  : "w-4 h-4 md:w-3 md:h-3 invisible"
+              }
+            />
+          </button>
+          <button
+            onClick={handleChangeMinimum}
+            className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-yellow-500 flex items-center justify-center"
+            style={minimum ? { background: "#adadad" } : {}}
+          >
+            <VscChromeMinimize
+              className={
+                !hoverWindowBar || minimum
+                  ? "w-4 h-4 md:w-3 md:h-3 invisible"
+                  : "w-4 h-4 md:w-3 md:h-3"
+              }
+            />
+          </button>
+          <button
+            onClick={(e) => onMaximum(appId, e)}
+            className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-green-500 flex items-center justify-center"
+            style={maximum ? { background: "#adadad" } : {}}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              className={!hoverWindowBar || maximum ? "invisible" : ""}
+              viewBox="0 0 21.961 21.244"
+            >
+              <g
+                id="exicon"
+                data-name="Group 1"
+                transform="translate(-179.495 -59.374)"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  className={!hoverWindowBar || maximum ? "invisible" : ""}
-                  viewBox="0 0 21.961 21.244"
-                >
-                  <g
-                    id="exicon"
-                    data-name="Group 1"
-                    transform="translate(-179.495 -59.374)"
-                  >
-                    <path
-                      id="Path_1"
-                      data-name="Path 1"
-                      d="M6.5,0,13,8H0Z"
-                      transform="matrix(-0.574, -0.819, 0.819, -0.574, 186.952, 80.619)"
-                    />
-                    <path
-                      id="Path_2"
-                      data-name="Path 2"
-                      d="M6.5,0,13,8H0Z"
-                      transform="matrix(0.559, 0.829, -0.829, 0.559, 194.186, 59.374)"
-                    />
-                  </g>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </Rnd>
-      )}
-    </React.Fragment>
+                <path
+                  id="Path_1"
+                  data-name="Path 1"
+                  d="M6.5,0,13,8H0Z"
+                  transform="matrix(-0.574, -0.819, 0.819, -0.574, 186.952, 80.619)"
+                />
+                <path
+                  id="Path_2"
+                  data-name="Path 2"
+                  d="M6.5,0,13,8H0Z"
+                  transform="matrix(0.559, 0.829, -0.829, 0.559, 194.186, 59.374)"
+                />
+              </g>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </Rnd>
   );
 }
 const mapStateToProps = (state) => ({
