@@ -25,7 +25,3 @@ npm run build
 
 &nbsp;
 
-
-## License
-
-[MIT](MIT)
