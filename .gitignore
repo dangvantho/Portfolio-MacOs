@@ -7,7 +7,7 @@
 .pnp.js
 .firebaserc
 firebase.json
-
+/screenshot
 # testing
 /coverage
 
