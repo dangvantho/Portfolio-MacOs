@@ -4,8 +4,8 @@ My portfolio website simulating macOS's GUI: https://dangvantho.github.io/Portfo
 
 Powered by [React](https://reactjs.org/) + [React Redux](https://react-redux.js.org/) + [Tailwind CSS](https://tailwindcss.com/) 
 
-![day](./public/screenshot/day.png)
-![night](./public/screenshot/night.png)
+![day](https://raw.githubusercontent.com/dangvantho/Portfolio-MacOs/main/public/screenshot/day.PNG)
+![night](https://raw.githubusercontent.com/dangvantho/Portfolio-MacOs/main/public/screenshot/night.PNG)
 
 
 &nbsp;
