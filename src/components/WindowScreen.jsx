@@ -16,7 +16,7 @@ function WindowScreen(props) {
     apps,
     onMinimum,
     onMaximum,
-    show
+    show,
   } = props;
   const [isClose, setIsClose] = useState(false);
   const [index, setIndex] = useState(zIndex);
@@ -34,18 +34,18 @@ function WindowScreen(props) {
     width: 600,
     height: 500,
   });
-  function randomPosition(){
+  function randomPosition() {
     return {
       x: Math.floor(Math.random() * 100),
       y: Math.floor(Math.random() * 100),
-    }
+    };
   }
   function handleDragStop(e, d) {
     let { x, y } = d;
     setPosition({ x, y });
   }
   function handleChangeMinimum(e) {
-    onMinimum(appId,e);
+    onMinimum(appId, e);
     oldSize.current = {
       ...oldSize.current,
       width: size.width,
@@ -64,9 +64,9 @@ function WindowScreen(props) {
   //     setIsClose(false);
   //   }
   // }, [apps]);
-  useEffect(()=>{
-    setIsClose(!show)
-  },[show])
+  useEffect(() => {
+    setIsClose(!show);
+  }, [show]);
   useEffect(() => {
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -80,7 +80,10 @@ function WindowScreen(props) {
         x: 0,
         y: -24,
       });
-    } else if(width===oldSize.current.width && height===oldSize.current.height) {
+    } else if (
+      width === oldSize.current.width &&
+      height === oldSize.current.height
+    ) {
       setSize({
         width: oldSize.current.width,
         height: oldSize.current.height,
@@ -125,7 +128,7 @@ function WindowScreen(props) {
               onMouseLeave={() => setHoverWindowBar(false)}
             >
               <button
-                onClick={(e) => close(appId,e)}
+                onClick={(e) => close(appId, e)}
                 className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-red-500 flex items-center justify-center"
               >
                 <IoClose
@@ -191,6 +194,71 @@ function WindowScreen(props) {
             {typeof content === "function"
               ? content({ width: size.width, height: size.height })
               : content}
+          </div>
+          <div className="md:hidden absolute top-3 left-0">
+            <div
+              className="absolute left-3 md:left-2 top-1/2 transform -translate-y-1/2  flex items-center space-x-2"
+              onMouseOver={() => setHoverWindowBar(true)}
+              onMouseLeave={() => setHoverWindowBar(false)}
+            >
+              <button
+                onClick={(e) => close(appId, e)}
+                className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-red-500 flex items-center justify-center"
+              >
+                <IoClose
+                  className={
+                    hoverWindowBar
+                      ? "w-4 h-4 md:w-3 md:h-3"
+                      : "w-4 h-4 md:w-3 md:h-3 invisible"
+                  }
+                />
+              </button>
+              <button
+                onClick={handleChangeMinimum}
+                className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-yellow-500 flex items-center justify-center"
+                style={minimum ? { background: "#adadad" } : {}}
+              >
+                <VscChromeMinimize
+                  className={
+                    !hoverWindowBar || minimum
+                      ? "w-4 h-4 md:w-3 md:h-3 invisible"
+                      : "w-4 h-4 md:w-3 md:h-3"
+                  }
+                />
+              </button>
+              <button
+                onClick={(e) => onMaximum(appId, e)}
+                className="w-4 h-4 md:w-3 md:h-3 rounded-full bg-green-500 flex items-center justify-center"
+                style={maximum ? { background: "#adadad" } : {}}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  className={!hoverWindowBar || maximum ? "invisible" : ""}
+                  viewBox="0 0 21.961 21.244"
+                >
+                  <g
+                    id="exicon"
+                    data-name="Group 1"
+                    transform="translate(-179.495 -59.374)"
+                  >
+                    <path
+                      id="Path_1"
+                      data-name="Path 1"
+                      d="M6.5,0,13,8H0Z"
+                      transform="matrix(-0.574, -0.819, 0.819, -0.574, 186.952, 80.619)"
+                    />
+                    <path
+                      id="Path_2"
+                      data-name="Path 2"
+                      d="M6.5,0,13,8H0Z"
+                      transform="matrix(0.559, 0.829, -0.829, 0.559, 194.186, 59.374)"
+                    />
+                  </g>
+                </svg>
+              </button>
+            </div>
           </div>
         </Rnd>
       )}
